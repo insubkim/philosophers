@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   b.c                                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: inskim <inskim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 21:06:24 by inskim            #+#    #+#             */
-/*   Updated: 2023/01/31 06:42:23 by inskim           ###   ########.fr       */
+/*   Updated: 2023/02/04 02:07:37 by inskim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,13 @@
 void    init_philo_info(t_philo_info *info, int num)
 {
     long long   time = micro_get_time();
-    long long   time_to_die = 410000;
-    long long   time_to_eat = 200000;
-    long long   time_to_sleep = 200000;
+    long long   time_to_die = 3000;
+    long long   time_to_eat = 1000;
+    long long   time_to_sleep = 0;
     int         must_eat_number = -1;
     int i = 0;
     pthread_mutex_t write_mutex;
     pthread_mutex_init(&write_mutex, 0);
-    
     while (i < num)
     {
         info[i].id = i + 1;
@@ -69,7 +68,6 @@ void    run_odd(t_philo_info *info)
         usleep(info->time_to_sleep);
     }
 }
-
 
 void    run_even(t_philo_info *info)
 {
@@ -138,7 +136,7 @@ void    check_death(t_philo_info *info, int num)
             if (!info[i].is_eating && micro_get_time() - info[i].last_ate_time >= info[i].time_to_die)
             {
                     printf("%llu\t%d is death\n", micro_get_time() - info[i].start_time, info[i].id);
-                    exit(1); 
+                    return ; 
             }
             pthread_mutex_unlock(info->write_mutex);
             i++;
@@ -148,7 +146,7 @@ void    check_death(t_philo_info *info, int num)
 
 int main(void)
 {
-    int num = 200;
+    int num = 5;
     
     t_philo_info    info[num];
     init_philo_info(info, num);
@@ -158,9 +156,13 @@ int main(void)
     //check death philo
     //queue??
     check_death(info, num);
-    void *a;
-    int i = 0;
-    while (i < num)
-        pthread_join(p[i++],&a);
+    // void *a;
+    // int i = 0;
+    // while (i < num)
+    //     pthread_join(p[i++],&a);
+    
     return (0);
+
+
+    
 }

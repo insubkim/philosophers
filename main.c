@@ -5,153 +5,52 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: inskim <inskim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/27 20:10:11 by inskim            #+#    #+#             */
-/*   Updated: 2023/01/28 08:49:04 by inskim           ###   ########.fr       */
+/*   Created: 2023/02/03 22:30:19 by inskim            #+#    #+#             */
+/*   Updated: 2023/02/04 08:39:04 by inskim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void    *run(void    *infos)
+
+int main(int argc, char *argv[])
 {
-    t_philo_info *info = (t_philo_info*)infos;
-   
-    while (1)
-    {     
-    // //eat
-    if (info->id % 2 == 0)//not odd
-    {
-        pthread_mutex_lock(info->left_fork);
-        pthread_mutex_lock(info->right_fork);
-        info->is_eating=1;
-        printf("%llu\t%d is eating\n", get_time() - info->start_time, info->id);
-        usleep(info->time_to_eat);
-        info->last_ate_time = get_time();
-        info->is_eating=0;
-        pthread_mutex_unlock(info->right_fork);
-        pthread_mutex_unlock(info->left_fork);
-    }   
-    else
-    {
-        pthread_mutex_lock(info->right_fork);
-        pthread_mutex_lock(info->left_fork);
-        info->is_eating=1;
-        printf("%llu\t%d is eating\n", get_time() - info->start_time, info->id);
-        usleep(info->time_to_eat);
-        info->last_ate_time = get_time();
-        info->is_eating=0;
-        pthread_mutex_unlock(info->left_fork);
-        pthread_mutex_unlock(info->right_fork);
-    } 
+    int arg[5];
+    pthread_mutex_t *mutex[2];
+    t_queue *queue;
+    t_philo_info    *info;
     
-    // //sleep
-    printf("%llu\t%d is sleeping\n", get_time() - info->start_time, info->id);
-    usleep(info->time_to_sleep);
-    // //think
-    pthread_mutex_lock(info->write_mutex);
-    printf("%llu\t%d is thinking\n", get_time() - info->start_time, info->id);
-    pthread_mutex_unlock(info->write_mutex);    
-    }
+    // set_arg(arg, argc, argv);
+    arg[0] = 5;
+    arg[1] = 410;
+    arg[2] = 200;
+    arg[3] = 200;
+    arg[4] = -1;
+
+    //make n mutex1, mutex2
+    mutex[0] = make_mutex(arg[0]);
+    mutex[1] = make_mutex(arg[0]);
+    //lock all mutex1
+    lock_mutex_arr(mutex[0], arg[0]);
+    //make queue
+    queue = make_mutex_queue(mutex, arg[0]);
+    //to circular queue
+    queue->front->next = queue->rear;
+    queue->rear->back = queue->front;
+
+    //make philo info
+    info = set_philo_info(arg, mutex);
+
+    //run philo
+    create_philo(info, arg[0]);
+
+    //run killer
+    run_killer(info, arg[0]);
+
+
+    //run scheduler
+    run_scheduler(queue, arg[0]);
+
+    //free
     return (0);
-}
-
-
-void    check_death(t_philo_info *info, int num)
-{
-    int i;
-
-    while (1)
-    {
-        i = 0;
-        while (i < num)
-        {
-            
-            int k = get_time() - info[i].last_ate_time >= info[i].time_to_die;
-            //i = get_time() - info[i].last_ate_time >= info[i].time_to_die;
-            if (!info[i].is_eating && get_time() - info[i].last_ate_time >= info[i].time_to_die)
-            {
-                    k++;
-                    k--;
-                    pthread_mutex_lock(info->write_mutex);
-                    printf("%llu\t%d is death\n", get_time() - info->start_time, info->id);
-                    pthread_mutex_unlock(info->write_mutex);
-                    exit(1); 
-            }
-            i++;
-        }
-
-
-        
-    }
-}
-
-int main(void)
-{
-    //make 4 philos
-    int num = 5;
-    t_philo_info    info[num];
-    int i;
-    long long   time;
-    int         time_to_die;
-    int         time_to_eat;
-    int         time_to_sleep;
-    int         must_eat_number;
-    
-
-    time_to_die = 2500;
-    time_to_eat = 2000000;
-    time_to_sleep = 1000000;
-    must_eat_number = -1;
-    i = 0;
-    time = get_time();
-    pthread_mutex_t write_mutex;
-    pthread_mutex_init(&write_mutex, 0);
-    
-    while (i < num)
-    {
-        info[i].id = i;
-        info[i].is_eating = 0;
-        info[i].last_ate_time = time;
-        info[i].left_fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
-        pthread_mutex_init(info[i].left_fork, 0); 
-        info[i].write_mutex = &write_mutex;
-        info[i].time_to_die = time_to_die;
-        info[i].time_to_eat = time_to_eat;
-        info[i].time_to_sleep = time_to_sleep;
-        info[i].must_eat_number = must_eat_number;
-        info[i].start_time = time;
-        i++;
-    }
-    i = 0;
-    while (i < num)
-    {
-        if (i != num - 1)
-            info[i].right_fork = info[i + 1].left_fork;
-        else
-            info[i].right_fork = info[0].left_fork;   
-        i++;
-    }
-
-    //create 4 threads and run
-    pthread_t p[num];
-    i = 0;
-    while (i < num)
-    {
-        pthread_create(&p[i], 0, run, &info[i]);
-        i += 2;
-    }
-    i = 1;
-    while (i < num)
-    {
-        pthread_create(&p[i], 0, run, &info[i]);
-        i +=2;
-    }
-    //check death philo
-    //queue??
-    check_death(info, num);
-    void *a;
-    i = 0;
-    while (i < num)
-        pthread_join(p[i++],&a);
-    
 }
