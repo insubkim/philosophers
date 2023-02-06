@@ -6,19 +6,25 @@
 /*   By: inskim <inskim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 20:11:47 by inskim            #+#    #+#             */
-/*   Updated: 2023/02/04 01:34:48 by inskim           ###   ########.fr       */
+/*   Updated: 2023/02/06 18:20:24 by inskim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
 # define MALLOC_ERROR 0
+# define MUTEX_LOCK_ERROR 1
+# define b_ERROR 2
+# define c_ERROR 3
+# define ARG_ERROR 4
+
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
 #include <sys/time.h>
 #include <unistd.h>
+#include <limits.h>
 
     //philos struct have
     /*
@@ -60,14 +66,17 @@ typedef struct s_philo_info
 }   t_philo_info;
 
 long long   get_time(void);
-void	handle_error(int error_reason);
+int set_arg(int arg[], int argc, char *argv[]);
+int	handle_error(int error_reason);
 t_queue	*init_queue(void);
 void	enqueue(t_queue *queue, t_node *node);
-t_node	*dequeue(t_queue *queue);//del
 t_node	*make_node(void *data);
-pthread_mutex_t *make_mutex(int num);
-void	free_linked_list(t_node *node);
+size_t  ft_strlen(const char *s);
+t_philo_info    *set_philo_info(int arg[]);
+pthread_t *run_philo(t_philo_info *info, int num);
+int run_scheduler(t_philo_info *info, int num);
 
+int   check_death(t_philo_info *info, int num);
 
 
 

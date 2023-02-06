@@ -12,10 +12,15 @@
 
 #include "philosophers.h"
 
-void	handle_error(int error_reason)
+int	handle_error(int error_reason)
 {
 	write(2, "Error\n", 6);
 	if (MALLOC_ERROR == error_reason)
 		write(2, "malloc error\n", ft_strlen("malloc error\n"));
-	return ;
+	else if (ARG_ERROR == error_reason)
+		write(2, "arg error\n", ft_strlen("arg error\n"));
+	else if (MUTEX_LOCK_ERROR == error_reason)
+		write(2, "mutex lock error\n", ft_strlen("mutex lock error\n"));
+	//1,2,3,
+	return (1);
 }

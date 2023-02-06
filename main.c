@@ -5,52 +5,48 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: inskim <inskim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/03 22:30:19 by inskim            #+#    #+#             */
-/*   Updated: 2023/02/04 08:39:04 by inskim           ###   ########.fr       */
+/*   Created: 2023/02/06 17:23:30 by inskim            #+#    #+#             */
+/*   Updated: 2023/02/06 18:19:32 by inskim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
+int    lock_mutex(t_philo_info *info, int num)
+{
+    while (num-- > 0)
+    {
+        if(pthread_mutex_lock(info->mutex1))
+            return (0);
+        if(pthread_mutex_lock(info->mutex2))
+            return (0);
+        info++;
+    }
+    return (1);
+}
 
-int main(int argc, char *argv[])
+int main(int argc, char **argv)
 {
     int arg[5];
-    pthread_mutex_t *mutex[2];
-    t_queue *queue;
     t_philo_info    *info;
     
-    // set_arg(arg, argc, argv);
-    arg[0] = 5;
-    arg[1] = 410;
-    arg[2] = 200;
-    arg[3] = 200;
-    arg[4] = -1;
-
-    //make n mutex1, mutex2
-    mutex[0] = make_mutex(arg[0]);
-    mutex[1] = make_mutex(arg[0]);
-    //lock all mutex1
-    lock_mutex_arr(mutex[0], arg[0]);
-    //make queue
-    queue = make_mutex_queue(mutex, arg[0]);
-    //to circular queue
-    queue->front->next = queue->rear;
-    queue->rear->back = queue->front;
-
-    //make philo info
-    info = set_philo_info(arg, mutex);
-
+    //check arg 
+    if (!set_arg(arg, --argc, ++argv))
+        return (handle_error(0));
+    //set philo info
+    info = set_philo_info(arg);//free info on error
+    if (!info)
+        return (handle_error(0));
+    //lock mutex1
+    lock_mutex(info, arg[0]);
     //run philo
-    create_philo(info, arg[0]);
-
+    if (!run_philo(info, arg[0]))
+        return (handle_error(0));
+        //run scheduler
+    if (!run_scheduler(info, arg[0]))
+        return (handle_error(0));
     //run killer
-    run_killer(info, arg[0]);
-
-
-    //run scheduler
-    run_scheduler(queue, arg[0]);
-
-    //free
+    if (!check_death(info, arg[0]))
+        return (handle_error(0));
     return (0);
 }
