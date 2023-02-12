@@ -12,27 +12,27 @@
 
 #include "philosophers.h"
 
-void    *free_info(t_philo_info *info, int num)
+void	*free_info(t_philo_info *info, int num)
 {
-    int i;
+	int	i;
 
-    if (!info)
-        return (0);
-    if (info->write_mutex)
-    {
-        i = 0;
-        while (i < num)
-        {
-            if (!info[i].left_fork)
-                break ;
-            free(info[i].left_fork);
-            if (!info[i].scheduler)
-                break ;
-            free(info[i].scheduler);    
-            i++;
-        }
-        free(info->write_mutex);
-    }
-    free(info);
-    return (0);
+	if (!info)
+		return (0);
+	if (info->write_mutex)
+	{
+		i = 0;
+		while (i < num)
+		{
+			if (!info[i].left_fork)
+				break ;
+			free(info[i].left_fork);
+			if (!info[i].scheduler)
+				break ;
+			free(info[i].scheduler);
+			i++;
+		}
+		free(info->write_mutex);
+	}
+	free(info);
+	return (0);
 }

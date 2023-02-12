@@ -30,7 +30,7 @@ void	enqueue(t_queue *queue, t_node *node)
 	{
 		queue->front = node;
 		queue->back = node;
-		node->next=node;
+		node->next = node;
 	}
 	else
 	{
@@ -42,7 +42,7 @@ void	enqueue(t_queue *queue, t_node *node)
 
 t_philo_info	*dequeue_enqueue(t_queue *queue)
 {
-	t_node *node;
+	t_node	*node;
 
 	node = queue->front;
 	queue->front = queue->front->next;
@@ -64,15 +64,15 @@ t_node	*make_node(t_philo_info *info)
 
 void	*free_queue(t_queue *queue)
 {
-        t_node  *node;
+	t_node	*node;
 
+	node = queue->front;
+	while (queue->front)
+	{
 		node = queue->front;
-        while (queue->front)
-        {
-                node = queue->front;
-				queue->front = node -> next;
-                free(node);
-        }
-		free(queue);
+		queue->front = node -> next;
+		free(node);
+	}
+	free(queue);
 	return (0);
 }
