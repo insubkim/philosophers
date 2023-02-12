@@ -6,7 +6,7 @@
 /*   By: insub <insub@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 18:00:26 by inskim            #+#    #+#             */
-/*   Updated: 2023/02/13 03:41:28 by insub            ###   ########.fr       */
+/*   Updated: 2023/02/13 04:10:56 by insub            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int	check_end(t_philo_info *info, int num)
 			end = 0;
 		if (!check(info, num, end))
 			return (1);
+		usleep(100);
 	}
 	return (1);
 }
