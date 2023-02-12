@@ -12,9 +12,12 @@
 
 #include "philosophers.h"
 
-int	handle_error(t_philo_info *info, int num)
+int	handle_error(t_philo_info *info, t_schedule_info *s_info, int num)
 {
 	write(2, "Error\n", 6);
-	free_info(info, num);
+	if (info)
+		free_info(info, num);
+	if (s_info)
+		free_schedule_info(s_info);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: insub <insub@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 18:17:37 by insub             #+#    #+#             */
-/*   Updated: 2023/02/11 18:53:42 by insub            ###   ########.fr       */
+/*   Updated: 2023/02/12 10:20:11 by insub            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,50 +18,38 @@ void    lock_mutexes(t_philo_info *info, int num)
         pthread_mutex_lock(info[num].scheduler);
 }
 
-void    busy_wait(t_philo_info *info)
+void    *schedule(t_schedule_info *info)
 {
+    t_philo_info    *p_info;
+    int             cnt;
+
     while (1)
     {
-        pthread_mutex_lock(info->scheduler);
-        if (!info->done)
+        cnt = 0;
+        while (cnt++ < info->num / 2)
+            pthread_mutex_unlock(dequeue_enqueue(info->queue1)->scheduler);
+        cnt = 0;
+        while (cnt++ < info->num / 2)
         {
-            pthread_mutex_unlock(info->scheduler);
-            break ;    
-        }
-        pthread_mutex_unlock(info->scheduler);
-    }
-}
-
-void    *create_philo(void *data)
-{
-    t_philo_info    *info;
-
-    info = data;
-    while (1)
-    {
-        pthread_mutex_lock(info->scheduler);
-        //take 2 fork 
-        info->done = 1;
-        pthread_mutex_unlock(info->scheduler);
-        usleep(info->time_to_eat * 1000);
-        //sleep
-        usleep(info->time_to_sleep * 1000);
-        //think
-        busy_wait(info);
+            p_info = dequeue_enqueue(info->queue2);               
+            while(1)
+            {
+                pthread_mutex_lock(p_info->scheduler);
+                if (p_info->done)
+                {
+                    p_info->done = 0;
+                    break ;
+                }
+                pthread_mutex_unlock(p_info->scheduler);
+            }
+        }   
     }
     return (0);
 }
 
-void    *create_schedule(void *data)
+void    *create_schedule(void *info)
 {
-    t_schedule_info *info;
-
-    info = data;
-    while (1)
-    {
-        
-    }
-    return (0);
+    return (schedule((info)));
 }
 
 pthread_t   *run_scheduler(t_philo_info *info, int num, t_schedule_info \
@@ -76,7 +64,6 @@ pthread_t   *run_scheduler(t_philo_info *info, int num, t_schedule_info \
     i = -1;
     while (++i < num)
         pthread_create(&(p[i]), 0, create_philo, &(info[i]));
-    //run scheduler
     pthread_create(&(p[i]), 0, create_schedule, schedule_info);
     return (p);
 }

@@ -6,7 +6,7 @@
 /*   By: insub <insub@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 20:11:47 by inskim            #+#    #+#             */
-/*   Updated: 2023/02/11 18:31:45 by insub            ###   ########.fr       */
+/*   Updated: 2023/02/12 10:40:49 by insub            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,21 +38,43 @@ typedef struct s_philo_info
     long long       start_time;
 }   t_philo_info;
 
+typedef struct s_node
+{
+    t_philo_info *info;
+    struct s_node  *next;
+}   t_node;
+
+typedef struct s_queue
+{
+    t_node  *front;
+    t_node  *back;
+}   t_queue;
+
 typedef struct s_schedule_info
 {
-    t_philo_info    *info;
+    t_queue         *queue1;
+    t_queue         *queue2;
     int             num;
 }   t_schedule_info;
 
 long long   get_time(void);
 int set_arg(int arg[], int argc, char *argv[]);
-int	handle_error(t_philo_info *info, int num);
+int	handle_error(t_philo_info *info, t_schedule_info *schedule_info,int num);
+t_schedule_info *set_schedule_info(t_philo_info *info, int num);
 size_t  ft_strlen(const char *s);
 t_philo_info    *set_philo_info(int arg[]);
 pthread_t *run_philo(t_philo_info *info, int num);
-int   check_death(t_philo_info *info, int num);
+int    check_end(t_philo_info *info, int num);
 long long   micro_get_time(void);
-pthread_t   *create_philo(t_philo_info *info, int num);
+void    *create_philo(void *data);
+pthread_t   *run_scheduler(t_philo_info *info, int num, t_schedule_info \
+*schedule_info);
+t_queue	*make_queue(void);
+t_philo_info	*dequeue_enqueue(t_queue *queue);
+t_node	*make_node(t_philo_info *info);
+void	enqueue(t_queue *queue, t_node *node);
 void    *free_info(t_philo_info *info, int num);
+void    *free_queue(t_queue *queue);
+void    *free_schedule_info(t_schedule_info *schedule_info);
 
 #endif
