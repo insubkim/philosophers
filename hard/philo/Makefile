@@ -16,12 +16,9 @@ CC = cc
 
 CFLAGS = -Wall -Werror -Wextra
 
-SRC = $(addprefix philo/, check_end.c circle_queue.c create_philo.c free_info.c handle_error.c main.c run_scheduler.c set_arg.c set_philo_info.c set_schedule_info.c time.c)
+SRC = check_end.c circle_queue.c create_philo.c free_info.c handle_error.c main.c run_scheduler.c set_arg.c set_philo_info.c set_schedule_info.c time.c
 OBJ = $(SRC:.c=.o)
 HEADER = philosophers.h
-BONUS_SRC = a
-BONUS_OBJ = $(BONUS_SRC:.c=.o)
-BONUS_HEADER = philosophers_bonus.h
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -30,22 +27,13 @@ all: $(NAME)
 
 $(NAME): | MAKE_MAN
 
-bonus: | MAKE_BONUS
-
 MAKE_MAN: $(OBJ) 
 	touch MAKE_MAN
-	rm -f MAKE_BONUS
-	$(CC) $(CFLAGS) -o philo/$(NAME) $(OBJ) 
-
-MAKE_BONUS: $(BONUS_OBJ) $(BONUS_HEADER)
-	touch MAKE_BONUS
-	rm -f MAKE_MAN
-	$(CC) $(CFLAGS) -o philo_bonus/$(NAME) $(BONUS_OBJ)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) 
 
 clean:
 	rm -f $(OBJ)
-	rm -f $(BONUS_OBJ)
-	rm -f MAKE_BONUS MAKE_MAN
+	rm -f MAKE_MAN
 
 fclean: clean
 	rm -f $(NAME)
@@ -53,4 +41,4 @@ fclean: clean
 re: fclean
 	make
 
-.phony: all clean fclean re bonus
+.phony: all clean fclean re
