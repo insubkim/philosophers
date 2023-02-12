@@ -6,7 +6,7 @@
 /*   By: insub <insub@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 22:30:19 by inskim            #+#    #+#             */
-/*   Updated: 2023/02/08 22:30:12 by insub            ###   ########.fr       */
+/*   Updated: 2023/02/13 02:12:29 by insub            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,11 @@ int set_mutex_info(t_philo_info *info, int num)
         if (!info[i].left_fork)
             return (0);
         pthread_mutex_init(info[i].left_fork, 0);    
-        // if (i != 0)
-        //     info[i - 1].right_fork = info[i].left_fork;
-        // if (i == num - 1)
-        //     info[i].right_fork = info[0].left_fork; 
+        if (i != 0)
+            info[i - 1].right_fork = info[i].left_fork;
+        if (i == num - 1)
+            info[i].right_fork = info[0].left_fork; 
         info[i].write_mutex = write_mutex;
-        i++;
-    }
-    i = 0;
-    while (i < num)
-    {
-        if (i != num - 1)
-            info[i].right_fork = info[i+1].left_fork;
-        else
-            info[i].right_fork = info[0].left_fork;
         i++;
     }
     return (1);

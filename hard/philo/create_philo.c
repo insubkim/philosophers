@@ -6,7 +6,7 @@
 /*   By: insub <insub@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 21:09:51 by insub             #+#    #+#             */
-/*   Updated: 2023/02/12 10:57:27 by insub            ###   ########.fr       */
+/*   Updated: 2023/02/13 03:49:55 by insub            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	*create_philo(void *data)
 		print_message(1, info);
 		info->done = 1;
 		pthread_mutex_unlock(info->scheduler);
-		usleep(info->time_to_eat * 1000);
+		ft_usleep(info->time_to_eat * 1000);
 		pthread_mutex_lock(info->write_mutex);
 		info->is_eating = 0;
 		info->eat_num++;
@@ -72,7 +72,7 @@ void	*create_philo(void *data)
 		pthread_mutex_unlock(info->left_fork);
 		pthread_mutex_unlock(info->right_fork);
 		print_message(2, info);
-		usleep(info->time_to_sleep * 1000);
+		ft_usleep(info->time_to_sleep * 1000);
 		print_message(3, info);
 		busy_wait(info);
 	}

@@ -6,7 +6,7 @@
 /*   By: insub <insub@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 18:17:37 by insub             #+#    #+#             */
-/*   Updated: 2023/02/12 10:20:11 by insub            ###   ########.fr       */
+/*   Updated: 2023/02/13 03:34:16 by insub            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	lock_mutexes(t_philo_info *info, int num)
 {
-	while (num-- > 0)
+	while (--num >= 0)
 		pthread_mutex_lock(info[num].scheduler);
 }
 
@@ -62,6 +62,9 @@ pthread_t	*run_scheduler(t_philo_info *info, int num, t_schedule_info \
 	p = (pthread_t *)malloc(sizeof(pthread_t) * (num + 1));
 	if (!p)
 		return (0);
+	i = -1;
+	while (++i < num)
+		info[i].last_ate_time = get_time();
 	i = -1;
 	while (++i < num)
 		pthread_create(&(p[i]), 0, create_philo, &(info[i]));

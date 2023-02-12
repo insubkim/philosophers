@@ -6,16 +6,12 @@
 /*   By: insub <insub@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 20:11:47 by inskim            #+#    #+#             */
-/*   Updated: 2023/02/08 22:15:55 by insub            ###   ########.fr       */
+/*   Updated: 2023/02/13 02:08:17 by insub            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
-# define MALLOC_ERROR 0
-# define MUTEX_LOCK_ERROR 1
-# define ARG_ERROR 4
-
 
 #include <stdio.h>
 #include <stdlib.h>

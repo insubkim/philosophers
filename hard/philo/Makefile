@@ -14,7 +14,7 @@ NAME = philo
 
 CC = cc
 
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra 
 
 SRC = check_end.c circle_queue.c create_philo.c free_info.c handle_error.c main.c run_scheduler.c set_arg.c set_philo_info.c set_schedule_info.c time.c
 OBJ = $(SRC:.c=.o)
@@ -23,18 +23,14 @@ HEADER = philosophers.h
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-all: $(NAME)
+all: $(NAME) 
 
-$(NAME): | MAKE_MAN
-
-MAKE_MAN: $(OBJ) 
-	touch MAKE_MAN
+$(NAME): $(OBJ) $(HEADER)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) 
 
 clean:
 	rm -f $(OBJ)
-	rm -f MAKE_MAN
-
+	
 fclean: clean
 	rm -f $(NAME)
 

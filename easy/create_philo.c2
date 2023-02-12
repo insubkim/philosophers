@@ -6,7 +6,7 @@
 /*   By: insub <insub@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 23:35:11 by insub             #+#    #+#             */
-/*   Updated: 2023/02/10 00:02:52 by insub            ###   ########.fr       */
+/*   Updated: 2023/02/13 02:19:10 by insub            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,15 @@ void    *run(void *data)
     {
         //eat
         pthread_mutex_lock(info->left_fork);
+        pthread_mutex_lock(info->write_mutex);
+        printf("%llu\t%d has taken a fork\n", get_time() - info->start_time, info->id);
+        pthread_mutex_unlock(info->write_mutex);
+        
         pthread_mutex_lock(info->right_fork);
         
         pthread_mutex_lock(info->write_mutex);
         info->is_eating = 1;
+        printf("%llu\t%d has taken a fork\n", get_time() - info->start_time, info->id);
         printf("%llu\t%d is eating\n", get_time() - info->start_time, info->id);
         pthread_mutex_unlock(info->write_mutex);
         
@@ -61,10 +66,13 @@ void    *run_reverse_fork(void *data)
     {
         //eat
         pthread_mutex_lock(info->right_fork);
+        pthread_mutex_lock(info->write_mutex);
+        printf("%llu\t%d has taken a fork\n", get_time() - info->start_time, info->id);
+        pthread_mutex_unlock(info->write_mutex);
         pthread_mutex_lock(info->left_fork);
-        
         pthread_mutex_lock(info->write_mutex);
         info->is_eating = 1;
+        printf("%llu\t%d has taken a fork\n", get_time() - info->start_time, info->id);
         printf("%llu\t%d is eating\n", get_time() - info->start_time, info->id);
         pthread_mutex_unlock(info->write_mutex);
         usleep(info->time_to_eat * 1000);

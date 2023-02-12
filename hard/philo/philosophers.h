@@ -6,7 +6,7 @@
 /*   By: insub <insub@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 20:11:47 by inskim            #+#    #+#             */
-/*   Updated: 2023/02/12 10:40:49 by insub            ###   ########.fr       */
+/*   Updated: 2023/02/13 03:49:39 by insub            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,5 +76,6 @@ void	enqueue(t_queue *queue, t_node *node);
 void    *free_info(t_philo_info *info, int num);
 void    *free_queue(t_queue *queue);
 void    *free_schedule_info(t_schedule_info *schedule_info);
+void	ft_usleep(long long time);
 
 #endif
