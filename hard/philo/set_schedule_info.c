@@ -3,17 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   set_schedule_info.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: insub <insub@student.42.fr>                +#+  +:+       +#+        */
+/*   By: inskim <inskim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 18:37:58 by insub             #+#    #+#             */
-/*   Updated: 2023/02/12 10:40:59 by insub            ###   ########.fr       */
+/*   Updated: 2023/02/12 15:46:19 by inskim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	make_node_enqueue(t_queue *queue, t_node *node, t_philo_info *info)
+int	make_node_enqueue(t_queue *queue, t_philo_info *info)
 {
+	t_node	*node;
+
 	node = make_node(info);
 	if (!node)
 		return (0);
@@ -24,7 +26,6 @@ int	make_node_enqueue(t_queue *queue, t_node *node, t_philo_info *info)
 t_queue	*make_schedule_queue(t_philo_info *info, int num)
 {
 	t_queue	*queue;
-	t_node	*node;
 	int	i;
 
 	queue = make_queue();
@@ -33,14 +34,14 @@ t_queue	*make_schedule_queue(t_philo_info *info, int num)
 	i = 0;
 	while (i < num)
 	{
-		if (!make_node_enqueue(queue, node, &(info[i])))
+		if (!make_node_enqueue(queue, &(info[i])))
 			return (free_queue(queue));
 		i = i + 2;
 	}
 	i = 1;
 	while (i < num)
 	{
-		if (!make_node_enqueue(queue, node, &(info[i])))
+		if (!make_node_enqueue(queue, &(info[i])))
 			return (free_queue(queue));
 		i = i + 2;
 	}
