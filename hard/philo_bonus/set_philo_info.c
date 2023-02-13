@@ -3,40 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   set_philo_info.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: insub <insub@student.42.fr>                +#+  +:+       +#+        */
+/*   By: inskim <inskim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 22:30:19 by inskim            #+#    #+#             */
-/*   Updated: 2023/02/12 18:18:55 by insub            ###   ########.fr       */
+/*   Updated: 2023/02/13 21:12:41 by inskim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
+void	*free_info(t_philo_info *info)
+{
+	free(info);
+	return (0);
+}
+
 int	set_sem_info(t_philo_info *info, int num)
 {
-	int		i;
-	sem_t	*write_sem;
+	int	i;
+	sem_t	*sem[3];
 
-	write_sem = (sem_t *)malloc(sizeof(sem_t));
-	if (!write_sem)
-		return (0);
-	write_sem = sem_open("write", O_CREAT, 0644, 1);
+	sem[0] = sem_open("write", O_CREAT, 0644, 1);
+	sem[1] = sem_open("fork", O_CREAT, 0644, num);
+	sem[2] = sem_open("scheduler", O_CREAT, 0644, num / 2);
 	i = -1;
 	while (++i < num)
 	{
-		info[i].left_fork = (sem_t *)malloc(sizeof(sem_t));
-		if (!info[i].left_fork)
-			return (0);
-		sem_init(info[i].left_fork, 0);
-		info[i].scheduler = (sem_t *)malloc(sizeof(sem_t));
-		if (!info[i].scheduler)
-			return (0);
-		sem_init(info[i].scheduler, 0);
-		if (i != 0)
-			info[i - 1].right_fork = info[i].left_fork;
-		if (i == num - 1)
-			info[i].right_fork = info[0].left_fork;
-		info[i].write_sem = write_sem;
+		info[i].write_sem = sem[0];
+		info[i].fork = sem[1];
+		info[i].scheduler = sem[2];
 	}
 	return (1);
 }
@@ -44,8 +39,8 @@ int	set_sem_info(t_philo_info *info, int num)
 t_philo_info	*set_philo_info(int arg[])
 {
 	t_philo_info	*info;
-	int		i;
-	long long	time;
+	int				i;
+	long long		time;
 
 	info = (t_philo_info *)malloc(sizeof(t_philo_info) * arg[0]);
 	if (!info)
@@ -66,6 +61,6 @@ t_philo_info	*set_philo_info(int arg[])
 		info[i].done = 0;
 	}
 	if (!set_sem_info(info, arg[0]))
-		return (free_info(info, arg[0]));
+		return (free_info(info));
 	return (info);
 }
