@@ -16,6 +16,9 @@ int	handle_error(t_philo_info *info)
 {
 	write(2, "Error\n", 6);
 	if (info)
+	{
+		unlink_sem();
 		free(info);
+	}
 	return (1);
 }

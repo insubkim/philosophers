@@ -6,17 +6,42 @@
 /*   By: inskim <inskim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 23:22:06 by insub             #+#    #+#             */
-/*   Updated: 2023/02/14 01:33:16 by inskim           ###   ########.fr       */
+/*   Updated: 2023/02/14 00:21:19 by inskim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
+void	kill_philo(pid_t *p, int num)
+{
+	int	i;
+	int	status;
+
+	i = 0;
+	while (i < num)
+	{
+		kill(p[i], SIGKILL);
+		i++;
+	}
+	i = 0;
+	while (i < num)
+	{
+		waitpid(p[i], &status, WIFEXITED);
+		i++;
+	}
+}
+
+void	unlink_sem(void)
+{
+		sem_unlink("fork");
+		sem_unlink("write");
+		sem_unlink("scheduler");
+}
+
 int	main(int argc, char **argv)
 {
 	pid_t			*p;
 	t_philo_info	*info;
-	pthread_t		*check_eat_done;
 	int				arg[5];
 
 	if (!set_arg(arg, --argc, ++argv))
@@ -26,11 +51,11 @@ int	main(int argc, char **argv)
 	info = set_philo_info(arg);
 	if (!info)
 		return (handle_error(0));
-	if (arg[4] != -1)
-		create_all_ate(info, arg);
 	p = create_philo(info, arg[0]);
 	if (!p)
-		return (handle_error(info));
-	wait_process(p, arg);
+		return (handle_error(info));	
+	check_end(info, arg[0]);
+	kill_philo(p, arg[0]);
+	unlink_sem();
 	return (0);
 }

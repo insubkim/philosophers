@@ -6,7 +6,7 @@
 /*   By: inskim <inskim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 22:30:19 by inskim            #+#    #+#             */
-/*   Updated: 2023/02/14 01:27:02 by inskim           ###   ########.fr       */
+/*   Updated: 2023/02/13 23:52:51 by inskim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,15 @@ int	set_sem_info(t_philo_info *info, int num)
 	int	i;
 	sem_t	*sem[3];
 
-	sem[0] = sem_open("fork", O_CREAT | O_EXCL, 0644, num);
-	sem[1] = sem_open("scheduler", O_CREAT | O_EXCL, 0644, num / 2);
-	sem[2] = sem_open("write", O_CREAT | O_EXCL, 0644, 1);
+	sem[0] = sem_open("write", O_CREAT, 0644, 1);
+	sem[1] = sem_open("fork", O_CREAT, 0644, num);
+	sem[2] = sem_open("scheduler", O_CREAT, 0644, num / 2);
 	i = -1;
 	while (++i < num)
 	{
-		info[i].fork = sem[0];
-		info[i].scheduler = sem[1];
-		info[i].write = sem[2];
-		info[i].eat_done = sem_open("eat", O_CREAT | O_EXCL, 0644, 1);
-		sem_wait(info[i].eat_done);
+		info[i].write_sem = sem[0];
+		info[i].fork = sem[1];
+		info[i].scheduler = sem[2];
 	}
 	return (1);
 }

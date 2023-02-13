@@ -6,7 +6,7 @@
 /*   By: inskim <inskim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 20:11:47 by inskim            #+#    #+#             */
-/*   Updated: 2023/02/14 01:24:01 by inskim           ###   ########.fr       */
+/*   Updated: 2023/02/14 00:19:57 by inskim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <semaphore.h>
-# include <pthread.h>
 # include <sys/time.h>
 # include <sys/wait.h>
 # include <unistd.h>
@@ -26,9 +25,8 @@ typedef struct s_philo_info
 {
 	int				id;
 	sem_t	*fork;
+	sem_t	*write_sem;
 	sem_t	*scheduler;
-	sem_t	*write;
-	sem_t	*eat_done;
 	int				done;
 	int				is_eating;
 	long long		last_ate_time;
@@ -43,8 +41,14 @@ typedef struct s_philo_info
 long long		get_time(void);
 int				set_arg(int arg[], int argc, char *argv[]);
 int				handle_error(t_philo_info *info);
-long long		micro_get_time(void);
-void			ft_usleep(long long time);
+size_t			ft_strlen(const char *s);
 t_philo_info	*set_philo_info(int arg[]);
+int				check_end(t_philo_info *info, int num);
+long long		micro_get_time(void);
+pid_t	*create_philo(t_philo_info *info, int num);
+void			*free_info(t_philo_info *info);
+void			ft_usleep(long long time);
+void	unlink_sem(void);
+char	*ft_itoa(int n);
 
 #endif
