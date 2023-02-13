@@ -6,7 +6,7 @@
 /*   By: insub <insub@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 23:22:06 by insub             #+#    #+#             */
-/*   Updated: 2023/02/12 10:54:54 by insub            ###   ########.fr       */
+/*   Updated: 2023/02/13 20:00:05 by inskim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int	main(int argc, char **argv)
 {
-	pthread_t	*p;
+	pthread_t		*p;
 	t_philo_info	*info;
-	int		arg[5];
+	int				arg[5];
 	t_schedule_info	*schedule_info;
 
 	if (!set_arg(arg, --argc, ++argv))

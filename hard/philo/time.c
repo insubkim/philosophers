@@ -6,7 +6,7 @@
 /*   By: insub <insub@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 20:37:33 by inskim            #+#    #+#             */
-/*   Updated: 2023/02/13 04:16:20 by insub            ###   ########.fr       */
+/*   Updated: 2023/02/13 20:02:59 by inskim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,3 @@ void	ft_usleep(long long time)
 	while (get_micro_time() < start + time)
 		usleep(700);
 }
-

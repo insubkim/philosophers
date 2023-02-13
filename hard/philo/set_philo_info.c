@@ -6,7 +6,7 @@
 /*   By: insub <insub@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 22:30:19 by inskim            #+#    #+#             */
-/*   Updated: 2023/02/11 18:14:26 by insub            ###   ########.fr       */
+/*   Updated: 2023/02/13 20:01:20 by inskim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	set_mutex_info(t_philo_info *info, int num)
 {
-	int		i;
+	int				i;
 	pthread_mutex_t	*write_mutex;
 
 	write_mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
@@ -44,8 +44,8 @@ int	set_mutex_info(t_philo_info *info, int num)
 t_philo_info	*set_philo_info(int arg[])
 {
 	t_philo_info	*info;
-	int		i;
-	long long	time;
+	int				i;
+	long long		time;
 
 	info = (t_philo_info *)malloc(sizeof(t_philo_info) * arg[0]);
 	if (!info)

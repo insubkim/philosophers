@@ -6,7 +6,7 @@
 /*   By: inskim <inskim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 18:37:58 by insub             #+#    #+#             */
-/*   Updated: 2023/02/12 15:46:19 by inskim           ###   ########.fr       */
+/*   Updated: 2023/02/13 20:01:02 by inskim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	make_node_enqueue(t_queue *queue, t_philo_info *info)
 t_queue	*make_schedule_queue(t_philo_info *info, int num)
 {
 	t_queue	*queue;
-	int	i;
+	int		i;
 
 	queue = make_queue();
 	if (!queue)
