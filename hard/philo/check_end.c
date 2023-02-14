@@ -17,9 +17,9 @@ int	check(t_philo_info *info, int num, int end)
 	int	i;
 
 	i = 0;
+	pthread_mutex_lock(info->write_mutex);
 	while (i < num)
 	{
-		pthread_mutex_lock(info->write_mutex);
 		if (!info[i].is_eating && \
 				get_time() - info[i].last_ate_time >= info->time_to_die)
 		{
@@ -31,9 +31,9 @@ int	check(t_philo_info *info, int num, int end)
 			end = 0;
 		else if (end && i == num - 1)
 			return (0);
-		pthread_mutex_unlock(info->write_mutex);
 		i++;
 	}
+	pthread_mutex_unlock(info->write_mutex);
 	return (1);
 }
 
@@ -48,7 +48,7 @@ int	check_end(t_philo_info *info, int num)
 			end = 0;
 		if (!check(info, num, end))
 			return (1);
-			usleep(500);
+		usleep(100);
 	}
 	return (1);
 }
