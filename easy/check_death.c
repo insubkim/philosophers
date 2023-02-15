@@ -6,7 +6,7 @@
 /*   By: insub <insub@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 18:00:26 by inskim            #+#    #+#             */
-/*   Updated: 2023/02/13 03:05:52 by insub            ###   ########.fr       */
+/*   Updated: 2023/02/15 21:49:46 by insub            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int    check_death(t_philo_info *info, int num)
             pthread_mutex_unlock(info->write_mutex);
             i++;
         }
-        usleep(1);
+        usleep(100);
     }
     return (1);
 }

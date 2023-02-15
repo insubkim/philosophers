@@ -6,7 +6,7 @@
 /*   By: insub <insub@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 20:11:47 by inskim            #+#    #+#             */
-/*   Updated: 2023/02/13 02:08:17 by insub            ###   ########.fr       */
+/*   Updated: 2023/02/15 21:51:24 by insub            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ t_philo_info    *set_philo_info(int arg[]);
 pthread_t *run_philo(t_philo_info *info, int num);
 int   check_death(t_philo_info *info, int num);
 long long   micro_get_time(void);
+void    ft_usleep(long long t);
 pthread_t   *create_philo(t_philo_info *info, int num);
 
 #endif
