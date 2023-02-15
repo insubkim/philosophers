@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_philo_info.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inskim <inskim@student.42.fr>              +#+  +:+       +#+        */
+/*   By: insub <insub@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 22:30:19 by inskim            #+#    #+#             */
-/*   Updated: 2023/02/14 01:27:02 by inskim           ###   ########.fr       */
+/*   Updated: 2023/02/15 23:10:09 by insub            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,11 @@ int	set_sem_info(t_philo_info *info, int num)
 		info[i].fork = sem[0];
 		info[i].scheduler = sem[1];
 		info[i].write = sem[2];
-		info[i].eat_done = sem_open("eat", O_CREAT | O_EXCL, 0644, 1);
-		sem_wait(info[i].eat_done);
+		info[i].eat_done = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+		if (!info[i].eat_done)
+			return (0);
+		pthread_mutex_init(info[i].eat_done, 0);
+		pthread_mutex_lock(info[i].eat_done);
 	}
 	return (1);
 }

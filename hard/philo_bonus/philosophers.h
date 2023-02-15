@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inskim <inskim@student.42.fr>              +#+  +:+       +#+        */
+/*   By: insub <insub@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 20:11:47 by inskim            #+#    #+#             */
-/*   Updated: 2023/02/14 01:24:01 by inskim           ###   ########.fr       */
+/*   Updated: 2023/02/15 23:04:38 by insub            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ typedef struct s_philo_info
 	sem_t	*fork;
 	sem_t	*scheduler;
 	sem_t	*write;
-	sem_t	*eat_done;
+	pthread_mutex_t	*eat_done;
 	int				done;
 	int				is_eating;
 	long long		last_ate_time;
@@ -40,11 +40,22 @@ typedef struct s_philo_info
 	long long		start_time;
 }	t_philo_info;
 
+typedef struct s_all_ate_info
+{
+	t_philo_info	*info;
+	int num;
+	int *end;
+}	t_all_ate_info;
+
+
 long long		get_time(void);
 int				set_arg(int arg[], int argc, char *argv[]);
 int				handle_error(t_philo_info *info);
 long long		micro_get_time(void);
 void			ft_usleep(long long time);
 t_philo_info	*set_philo_info(int arg[]);
+void    check_end(pid_t *p, int num, int *end);
+void    create_all_ate(t_philo_info *philo_info, int *arg, int *end);
+pid_t   *create_philo(t_philo_info *info, int num);
 
 #endif

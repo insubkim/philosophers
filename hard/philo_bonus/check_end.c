@@ -1,37 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   check_end.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: insub <insub@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/07 23:22:06 by insub             #+#    #+#             */
-/*   Updated: 2023/02/15 22:52:04 by insub            ###   ########.fr       */
+/*   Created: 2023/02/15 22:52:14 by insub             #+#    #+#             */
+/*   Updated: 2023/02/15 22:59:28 by insub            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	main(int argc, char **argv)
+void    check_end(pid_t *p, int num, int *end)
 {
-	pid_t			*p;
-	t_philo_info	*info;
-	int				arg[5];
-	int end;
+    int status;
 
-	if (!set_arg(arg, --argc, ++argv))
-		return (handle_error(0));
-	if (!arg[0])
-		return (0);
-	info = set_philo_info(arg);
-	if (!info)
-		return (handle_error(0));
-	end = 0;
-	if (arg[4] != -1)
-		create_all_ate(info, arg, &end);
-	p = create_philo(info, arg[0]);
-	if (!p)
-		return (handle_error(info));
-	check_end(p, arg[0], &end);
-	return (0);
+    while (1)
+    {
+        if (*end)
+            exit(1);
+        if (waitpid(-1, &status, WNOHANG))
+            exit(1);
+        usleep(700);
+    }
 }
