@@ -14,10 +14,10 @@
 
 int	main(int argc, char **argv)
 {
-	pid_t			*p;
+	pid_t		*p;
 	t_philo_info	*info;
-	int				arg[5];
-	int end;
+	int		arg[5];
+	int		end;
 
 	if (!set_arg(arg, --argc, ++argv))
 		return (handle_error(0));

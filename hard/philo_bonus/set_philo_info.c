@@ -44,8 +44,8 @@ int	set_sem_info(t_philo_info *info, int num)
 t_philo_info	*set_philo_info(int arg[])
 {
 	t_philo_info	*info;
-	int				i;
-	long long		time;
+	int		i;
+	long long	time;
 
 	info = (t_philo_info *)malloc(sizeof(t_philo_info) * arg[0]);
 	if (!info)

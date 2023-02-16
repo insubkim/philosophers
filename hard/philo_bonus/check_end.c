@@ -12,20 +12,20 @@
 
 #include "philosophers.h"
 
-void    check_end(pid_t *p, int num, int *end)
+void	check_end(pid_t *p, int num, int *end)
 {
-    int status;
-    int i;
+	int	status;
+	int	i;
 
-    while (1)
-    {
-        if (*end)//data race
-            break ;
-        if (waitpid(-1, &status, WNOHANG))
-            break ;
-        usleep(700);
-    }
-    i = 0;
-    while (i < num)
-        kill(p[i++], SIGILL);
+	while (1)
+	{
+		if (*end)//data race
+			break ;
+		if (waitpid(-1, &status, WNOHANG))
+			break ;
+		usleep(700);
+	}
+	i = 0;
+	while (i < num)
+		kill(p[i++], SIGILL);
 }

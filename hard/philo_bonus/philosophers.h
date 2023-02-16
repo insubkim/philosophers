@@ -43,19 +43,18 @@ typedef struct s_philo_info
 typedef struct s_all_ate_info
 {
 	t_philo_info	*info;
-	int num;
-	int *end;
+	int		num;
+	int		*end;
 }	t_all_ate_info;
 
-
-long long		get_time(void);
-int				set_arg(int arg[], int argc, char *argv[]);
-int				handle_error(t_philo_info *info);
-long long		micro_get_time(void);
-void			ft_usleep(long long time);
+long long	get_time(void);
+int		set_arg(int arg[], int argc, char *argv[]);
+int		handle_error(t_philo_info *info);
+long long	micro_get_time(void);
+void		ft_usleep(long long time);
 t_philo_info	*set_philo_info(int arg[]);
-void    check_end(pid_t *p, int num, int *end);
-void    create_all_ate(t_philo_info *philo_info, int *arg, int *end);
-pid_t   *create_philo(t_philo_info *info, int num);
+void		check_end(pid_t *p, int num, int *end);
+void		create_all_ate(t_philo_info *philo_info, int *arg, int *end);
+pid_t		*create_philo(t_philo_info *info, int num);
 
 #endif
