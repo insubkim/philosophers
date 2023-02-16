@@ -6,7 +6,7 @@
 /*   By: insub <insub@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 22:32:29 by insub             #+#    #+#             */
-/*   Updated: 2023/02/15 23:35:12 by insub            ###   ########.fr       */
+/*   Updated: 2023/02/16 22:47:28 by insub            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ void	*philo(void *data)
 		ft_usleep(info->time_to_eat * 1000);
 		sem_wait(info->write);
 		info->is_eating = 0;
-		info->eat_num++;
+		if (++(info->eat_num) >= info->must_eat_number)
+			pthread_mutex_unlock(info->eat_done);
 		sem_post(info->write);
         sem_post(info->fork);
         sem_post(info->fork);
@@ -71,7 +72,7 @@ void    run_philo(t_philo_info *info)
     pthread_create(&p, 0, philo, info);
     while (1)
     {
-        sem_wait(info->write);
+	   sem_wait(info->write);
 		if (!info->is_eating && \
 				get_time() - info->last_ate_time >= info->time_to_die)
 		{
@@ -98,8 +99,10 @@ pid_t   *create_philo(t_philo_info *info, int num)
     {
         p[i] = fork();
         if (!p[i])
-            run_philo(&(info[i]));
-        i++;
+		{
+			run_philo(&(info[i]));
+		}
+		i++;
     }
     return (p);
 }
