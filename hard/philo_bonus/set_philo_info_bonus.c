@@ -1,21 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   set_philo_info.c                                   :+:      :+:    :+:   */
+/*   set_philo_info_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: inskim <inskim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 22:30:19 by inskim            #+#    #+#             */
-/*   Updated: 2023/02/17 22:31:19 by inskim           ###   ########.fr       */
+/*   Updated: 2023/02/17 22:47:51 by inskim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "philosophers_bonus.h"
 
 void	*free_info(t_philo_info *info)
 {
-	int	i;
-
 	sem_unlink("fork");
 	sem_unlink("scheduler");
 	sem_unlink("write");

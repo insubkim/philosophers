@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   create_philo.c                                     :+:      :+:    :+:   */
+/*   create_philo_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: inskim <inskim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 22:32:29 by insub             #+#    #+#             */
-/*   Updated: 2023/02/17 22:30:04 by inskim           ###   ########.fr       */
+/*   Updated: 2023/02/17 22:47:53 by inskim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "philosophers_bonus.h"
 
 void	print_message(int flag, t_philo_info *info)
 {

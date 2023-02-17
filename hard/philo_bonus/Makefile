@@ -14,11 +14,11 @@ NAME = philo
 
 CC = cc
 
-CFLAGS = -Wall -Werror -Wextra 
+CFLAGS = -Wall -Werror -Wextra
 
-SRC = check_end.c circle_queue.c create_philo.c free_info.c handle_error.c main.c run_scheduler.c set_arg.c set_philo_info.c set_schedule_info.c time.c
+SRC = check_end_bonus.c create_all_ate_bonus.c create_philo_bonus.c handle_error_bonus.c main_bonus.c set_arg_bonus.c set_philo_info_bonus.c time_bonus.c
 OBJ = $(SRC:.c=.o)
-HEADER = philosophers.h
+HEADER = philosophers_bonus.h
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
