@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_philo_info.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: insub <insub@student.42.fr>                +#+  +:+       +#+        */
+/*   By: inskim <inskim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 22:30:19 by inskim            #+#    #+#             */
-/*   Updated: 2023/02/15 23:10:09 by insub            ###   ########.fr       */
+/*   Updated: 2023/02/17 22:31:19 by inskim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,38 +14,44 @@
 
 void	*free_info(t_philo_info *info)
 {
+	int	i;
+
+	sem_unlink("fork");
+	sem_unlink("scheduler");
+	sem_unlink("write");
+	sem_unlink("eat done");
 	free(info);
 	return (0);
 }
 
-int	set_sem_info(t_philo_info *info, int num)
+void	set_sem_info(t_philo_info *info, int num)
 {
-	int	i;
-	sem_t	*sem[3];
+	int		i;
+	sem_t	*sem[4];
 
-	sem[0] = sem_open("fork", O_CREAT | O_EXCL, 0644, num);
-	sem[1] = sem_open("scheduler", O_CREAT | O_EXCL, 0644, num / 2);
-	sem[2] = sem_open("write", O_CREAT | O_EXCL, 0644, 1);
+	sem_unlink("fork");
+	sem_unlink("scheduler");
+	sem_unlink("write");
+	sem_unlink("eat done");
+	sem[0] = sem_open("fork", O_CREAT, 0644, num);
+	sem[1] = sem_open("scheduler", O_CREAT, 0644, num / 2);
+	sem[2] = sem_open("write", O_CREAT, 0644, 1);
+	sem[3] = sem_open("eat done", O_CREAT, 0644, num);
 	i = -1;
 	while (++i < num)
 	{
 		info[i].fork = sem[0];
 		info[i].scheduler = sem[1];
 		info[i].write = sem[2];
-		info[i].eat_done = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
-		if (!info[i].eat_done)
-			return (0);
-		pthread_mutex_init(info[i].eat_done, 0);
-		pthread_mutex_lock(info[i].eat_done);
+		info[i].eat_done = sem[3];
 	}
-	return (1);
 }
 
 t_philo_info	*set_philo_info(int arg[])
 {
 	t_philo_info	*info;
-	int		i;
-	long long	time;
+	int				i;
+	long long		time;
 
 	info = (t_philo_info *)malloc(sizeof(t_philo_info) * arg[0]);
 	if (!info)
@@ -65,7 +71,6 @@ t_philo_info	*set_philo_info(int arg[])
 		info[i].eat_num = 0;
 		info[i].done = 0;
 	}
-	if (!set_sem_info(info, arg[0]))
-		return (free_info(info));
+	set_sem_info(info, arg[0]);
 	return (info);
 }

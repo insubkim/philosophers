@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_philo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: insub <insub@student.42.fr>                +#+  +:+       +#+        */
+/*   By: inskim <inskim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 22:32:29 by insub             #+#    #+#             */
-/*   Updated: 2023/02/16 22:47:28 by insub            ###   ########.fr       */
+/*   Updated: 2023/02/17 22:30:04 by inskim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	*philo(void *data)
 	t_philo_info	*info;
 
 	info = data;
+	sem_wait(info->eat_done);
 	while (1)
 	{
 		sem_wait(info->scheduler);
@@ -51,8 +52,8 @@ void	*philo(void *data)
 		ft_usleep(info->time_to_eat * 1000);
 		sem_wait(info->write);
 		info->is_eating = 0;
-		if (++(info->eat_num) >= info->must_eat_number)
-			pthread_mutex_unlock(info->eat_done);
+		if (++(info->eat_num) == info->must_eat_number)
+			sem_post(info->eat_done);
 		sem_post(info->write);
 		sem_post(info->fork);
 		sem_post(info->fork);
@@ -88,7 +89,7 @@ void	run_philo(t_philo_info *info)
 pid_t	*create_philo(t_philo_info *info, int num)
 {
 	pid_t	*p;
-	int	i;
+	int		i;
 
 	p = (pid_t *)malloc(sizeof(pid_t) * num);
 	if (!p)
@@ -98,9 +99,7 @@ pid_t	*create_philo(t_philo_info *info, int num)
 	{
 		p[i] = fork();
 		if (!p[i])
-		{
 			run_philo(&(info[i]));
-		}
 		i++;
 	}
 	return (p);
