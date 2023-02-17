@@ -1,1 +1,1 @@
-ps | grep "a.out" |awk '{print $1}' |xargs kill -9
+ps | grep "philo" |awk '{print $1}' |xargs kill -9
