@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_schedule_info.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inskim <inskim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: insub <insub@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 18:37:58 by insub             #+#    #+#             */
-/*   Updated: 2023/02/13 20:01:02 by inskim           ###   ########.fr       */
+/*   Updated: 2023/02/23 22:11:23 by insub            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ void	*free_schedule_info(t_schedule_info *schedule_info)
 		free_queue(schedule_info->queue1);
 	if (schedule_info->queue2)
 		free_queue(schedule_info->queue2);
-	return (0);
 	free(schedule_info);
+	return (0);
 }
 
 t_schedule_info	*set_schedule_info(t_philo_info *info, int num)

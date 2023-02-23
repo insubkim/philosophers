@@ -6,7 +6,7 @@
 /*   By: insub <insub@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 18:17:37 by insub             #+#    #+#             */
-/*   Updated: 2023/02/13 20:01:33 by inskim           ###   ########.fr       */
+/*   Updated: 2023/02/23 22:47:52 by insub            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void	*schedule(t_schedule_info *info)
 				}
 				pthread_mutex_unlock(p_info->scheduler);
 			}
+
+			
 		}
 	}
 	return (0);
@@ -49,6 +51,7 @@ void	*schedule(t_schedule_info *info)
 
 void	*create_schedule(void *info)
 {
+	lock_mutexes(((t_schedule_info *)info)->queue1->front->info, ((t_schedule_info *)info)->num);
 	return (schedule((info)));
 }
 
@@ -58,16 +61,15 @@ pthread_t	*run_scheduler(t_philo_info *info, int num, t_schedule_info \
 	pthread_t	*p;
 	int			i;
 
-	lock_mutexes(info, num);
 	p = (pthread_t *)malloc(sizeof(pthread_t) * (num + 1));
 	if (!p)
 		return (0);
 	i = -1;
+	pthread_create(&(p[i]), 0, create_schedule, schedule_info);
 	while (++i < num)
 		info[i].last_ate_time = get_time();
 	i = -1;
 	while (++i < num)
 		pthread_create(&(p[i]), 0, create_philo, &(info[i]));
-	pthread_create(&(p[i]), 0, create_schedule, schedule_info);
 	return (p);
 }
