@@ -6,7 +6,7 @@
 /*   By: inskim <inskim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 20:11:47 by inskim            #+#    #+#             */
-/*   Updated: 2023/02/17 22:47:51 by inskim           ###   ########.fr       */
+/*   Updated: 2023/02/25 16:56:23 by inskim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct s_philo_info
 	sem_t			*scheduler;
 	sem_t			*write;
 	sem_t			*eat_done;
+	pthread_mutex_t	*mu1;
 	int				done;
 	int				is_eating;
 	long long		last_ate_time;

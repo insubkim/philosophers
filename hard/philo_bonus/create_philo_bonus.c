@@ -6,7 +6,7 @@
 /*   By: inskim <inskim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 22:32:29 by insub             #+#    #+#             */
-/*   Updated: 2023/02/17 22:47:53 by inskim           ###   ########.fr       */
+/*   Updated: 2023/02/25 17:01:02 by inskim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,14 @@ void	print_message(int flag, t_philo_info *info)
 				get_time() - info->start_time, info->id);
 	else if (flag == 1)
 	{
+		pthread_mutex_lock(info->mu1);
 		info->is_eating = 1;
 		info->last_ate_time = get_time();
 		printf("%llu\t%d has taken a fork\n", \
 				get_time() - info->start_time, info->id);
 		printf("%llu\t%d is eating\n", \
 				get_time() - info->start_time, info->id);
+		pthread_mutex_unlock(info->mu1);
 	}
 	else if (flag == 2)
 		printf("%llu\t%d is sleeping\n", \
@@ -51,9 +53,12 @@ void	*philo(void *data)
 		print_message(1, info);
 		ft_usleep(info->time_to_eat * 1000);
 		sem_wait(info->write);
+		pthread_mutex_lock(info->mu1);
 		info->is_eating = 0;
 		if (++(info->eat_num) == info->must_eat_number)
 			sem_post(info->eat_done);
+		pthread_mutex_unlock(info->mu1);
+		
 		sem_post(info->write);
 		sem_post(info->fork);
 		sem_post(info->fork);
@@ -73,6 +78,7 @@ void	run_philo(t_philo_info *info)
 	while (1)
 	{
 		sem_wait(info->write);
+		pthread_mutex_lock(info->mu1);
 		if (!info->is_eating && \
 				get_time() - info->last_ate_time >= info->time_to_die)
 		{
@@ -80,6 +86,7 @@ void	run_philo(t_philo_info *info)
 					get_time() - info->start_time, info->id);
 			break ;
 		}
+		pthread_mutex_unlock(info->mu1);
 		sem_post(info->write);
 		usleep(500);
 	}

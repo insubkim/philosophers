@@ -6,7 +6,7 @@
 /*   By: inskim <inskim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 22:30:19 by inskim            #+#    #+#             */
-/*   Updated: 2023/02/17 22:47:51 by inskim           ###   ########.fr       */
+/*   Updated: 2023/02/25 16:57:31 by inskim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void	set_sem_info(t_philo_info *info, int num)
 		info[i].scheduler = sem[1];
 		info[i].write = sem[2];
 		info[i].eat_done = sem[3];
+		info[i].mu1 = malloc(sizeof(pthread_mutex_t));
+		pthread_mutex_init(info[i].mu1, 0);
 	}
 }
 
