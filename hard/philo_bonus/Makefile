@@ -14,7 +14,7 @@ NAME = philo
 
 CC = cc
 
-CFLAGS = -Wall -Werror -Wextra -g -fsanitize=address
+CFLAGS = -Wall -Werror -Wextra
 
 SRC = check_end_bonus.c create_all_ate_bonus.c create_philo_bonus.c handle_error_bonus.c main_bonus.c set_arg_bonus.c set_philo_info_bonus.c time_bonus.c
 OBJ = $(SRC:.c=.o)
