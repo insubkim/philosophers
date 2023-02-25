@@ -6,7 +6,7 @@
 /*   By: insub <insub@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 18:17:37 by insub             #+#    #+#             */
-/*   Updated: 2023/02/23 22:47:52 by insub            ###   ########.fr       */
+/*   Updated: 2023/02/25 16:39:35 by inskim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ pthread_t	*run_scheduler(t_philo_info *info, int num, t_schedule_info \
 	p = (pthread_t *)malloc(sizeof(pthread_t) * (num + 1));
 	if (!p)
 		return (0);
+	pthread_create(&(p[num]), 0, create_schedule, schedule_info);
 	i = -1;
-	pthread_create(&(p[i]), 0, create_schedule, schedule_info);
 	while (++i < num)
 		info[i].last_ate_time = get_time();
 	i = -1;
